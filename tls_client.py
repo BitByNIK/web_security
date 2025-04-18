@@ -45,10 +45,11 @@ if not image_path:
     print("\nSending empty HTTP request to server:")
     request = b"GET / HTTP/1.0\r\nHost: " + \
         hostname.encode('utf-8') + b"\r\n\r\n"
+    print(request)
     ssock.sendall(request)
 
     # Read HTTP Response from Server
-    print("Response from server:")
+    print("\nResponse from server:")
     response = ssock.recv(2048)
     while response:
         pprint.pprint(response.split(b"\r\n"))
