@@ -6,7 +6,7 @@ import pprint
 
 hostname = sys.argv[1]
 port = 443
-cadir = '/etc/ssl/certs'
+cadir = './certs'
 
 # Set up the TLS context
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -23,7 +23,18 @@ input("After making TCP connection. Press any key to continue ...")
 ssock = context.wrap_socket(sock, server_hostname=hostname,
                             do_handshake_on_connect=False)
 ssock.do_handshake()  # Start the handshake
+
+# Print the Certificate in DER format
 pprint.pprint(ssock.getpeercert())
+
+# Print the Certificate in PEM format
+print("PEM Certificate:")
+pprint.pprint(ssl.DER_cert_to_PEM_cert(ssock.getpeercert(True)))
+
+# Print the Cipher used
+print("Cipher used:")
+pprint.pprint(ssock.cipher())
+
 input("After handshake. Press any key to continue ...")
 
 # Close the TLS Connection
